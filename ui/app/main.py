@@ -20,6 +20,10 @@ from data.stats import dataset_stats
 from data.plots import plot_numeric_columns
 
 
+# =====================================================
+# MAIN WINDOW
+# =====================================================
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -33,15 +37,17 @@ class MainWindow(QMainWindow):
 
         self.menu_screen = self.create_menu_screen()
         self.data_screen = self.create_data_screen()
+        self.ml_screen = self.create_ml_screen()
 
-        self.stack.addWidget(self.menu_screen)
-        self.stack.addWidget(self.data_screen)
+        self.stack.addWidget(self.menu_screen)  # index 0
+        self.stack.addWidget(self.data_screen)  # index 1
+        self.stack.addWidget(self.ml_screen)    # index 2
 
         self.setCentralWidget(self.stack)
 
-    # ---------------------
+    # =================================================
     # TELAS
-    # ---------------------
+    # =================================================
 
     def create_menu_screen(self):
         widget = QWidget()
@@ -53,12 +59,18 @@ class MainWindow(QMainWindow):
         btn_data = QPushButton("Módulo de Dados")
         btn_data.clicked.connect(self.open_data_screen)
 
+        btn_ml = QPushButton("Módulo de ML")
+        btn_ml.clicked.connect(self.open_ml_screen)
+
         layout.addWidget(title)
         layout.addWidget(btn_data)
+        layout.addWidget(btn_ml)
         layout.addStretch()
 
         widget.setLayout(layout)
         return widget
+
+    # -------------------------------------------------
 
     def create_data_screen(self):
         widget = QWidget()
@@ -86,8 +98,6 @@ class MainWindow(QMainWindow):
 
         # Estatísticas
         self.stats_label = QLabel("Estatísticas:")
-        self.stats_label.setStyleSheet("font-size: 14px;")
-
         self.info_label = QLabel("Nenhum arquivo carregado.")
 
         # Layout esquerdo
@@ -107,9 +117,33 @@ class MainWindow(QMainWindow):
         widget.setLayout(main_layout)
         return widget
 
-    # ---------------------
+    # -------------------------------------------------
+
+    def create_ml_screen(self):
+        widget = QWidget()
+        layout = QVBoxLayout()
+
+        top_layout = QHBoxLayout()
+
+        btn_back = QPushButton("← Voltar")
+        btn_back.clicked.connect(self.open_menu_screen)
+
+        title = QLabel("Módulo de Machine Learning")
+        title.setStyleSheet("font-size: 18px;")
+
+        top_layout.addWidget(btn_back)
+        top_layout.addStretch()
+
+        layout.addLayout(top_layout)
+        layout.addWidget(title)
+        layout.addStretch()
+
+        widget.setLayout(layout)
+        return widget
+
+    # =================================================
     # NAVEGAÇÃO
-    # ---------------------
+    # =================================================
 
     def open_menu_screen(self):
         self.stack.setCurrentIndex(0)
@@ -117,9 +151,12 @@ class MainWindow(QMainWindow):
     def open_data_screen(self):
         self.stack.setCurrentIndex(1)
 
-    # ---------------------
+    def open_ml_screen(self):
+        self.stack.setCurrentIndex(2)
+
+    # =================================================
     # AÇÕES
-    # ---------------------
+    # =================================================
 
     def open_csv(self):
         file_path, _ = QFileDialog.getOpenFileName(
@@ -153,6 +190,8 @@ class MainWindow(QMainWindow):
                 f"Arquivo: {file_path} | Linhas: {rows} | Colunas: {cols}"
             )
 
+    # -------------------------------------------------
+
     def show_plot(self):
         if self.current_df is None:
             return
@@ -163,6 +202,8 @@ class MainWindow(QMainWindow):
 
         import matplotlib.pyplot as plt
         plt.show()
+
+    # -------------------------------------------------
 
     def load_table(self, df):
         self.table.setRowCount(len(df))
@@ -178,9 +219,9 @@ class MainWindow(QMainWindow):
                 )
 
 
-# ---------------------
+# =====================================================
 # START
-# ---------------------
+# =====================================================
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
