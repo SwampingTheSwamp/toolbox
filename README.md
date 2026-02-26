@@ -33,3 +33,40 @@ No diretório raiz do projeto (onde estão as pastas `api/`, `ui/`, `data/`, etc
 **Linux / macOS**
 ```bash
 python3 -m venv venv
+``` 
+
+**Windows**
+```bash
+python -m venv venv
+```
+### <span style="color:#607D8B"> 2) Ativar o ambiente virtual
+</span>
+
+**Linux / macOS**
+```bash
+source venv/bin/activate
+```
+**Windows (PowerShell)**
+```bash
+venv\Scripts\Activate.ps1
+```
+### <span style="color:#607D8B"> 3) Instalar as dependências do projeto
+</span>
+
+**Com o ambiente virtual ativo**
+```bash
+pip install -r requirements.txt
+```
+### <span style="color:#607D8B"> 4) Iniciar o projeto (interface gráfica)
+</span>
+
+**Ainda no diretório raiz do projeto**
+```bash
+python -m ui.app.main
+```
+---
+
+Observações:
+- O ambiente virtual deve estar ativo para executar o projeto
+- Caso ocorram erros de importação, verifique se todas as dependências foram instaladas corretamente
+- O comando deve ser executado a partir da raiz do projeto
